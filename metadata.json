@@ -1,0 +1,6 @@
+{
+  "name": "Token Lists Explorer",
+  "description": "An interactive DeFi token list browser, validator, and AI-enabled explorer based on the Token Lists standard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
