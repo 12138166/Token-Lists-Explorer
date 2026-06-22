@@ -12,6 +12,29 @@ interface ExplorerProps {
   onAuditList: () => void;
 }
 
+// Helper component for fetching and displaying token logo with dynamic error fallback behavior to keep UI clean and legible
+function TokenLogo({ logoURI, symbol }: { logoURI?: string; symbol: string }) {
+  const [hasError, setHasError] = useState(false);
+
+  return (
+    <div className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 p-1.5 flex items-center justify-center flex-shrink-0 relative overflow-hidden shadow-inner select-none">
+      {logoURI && !hasError ? (
+        <img
+          src={logoURI}
+          alt={`${symbol} Logo`}
+          onError={() => setHasError(true)}
+          className="w-full h-full object-contain transition-all duration-200 hover:scale-110"
+          referrerPolicy="no-referrer"
+        />
+      ) : (
+        <span className="text-[10px] uppercase font-black tracking-tight text-indigo-600 bg-indigo-50/50 w-full h-full flex items-center justify-center rounded-full">
+          {symbol ? symbol.slice(0, 2) : "??"}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function Explorer({
   list,
   curatedMeta,
@@ -442,23 +465,7 @@ export default function Explorer({
                   >
                     {/* Name & Symbol */}
                     <div className="col-span-5 md:col-span-4 flex items-center gap-3 min-w-0">
-                      <div className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 p-1.5 flex items-center justify-center flex-shrink-0 relative">
-                        {token.logoURI ? (
-                          <img
-                            src={token.logoURI}
-                            alt={`${token.symbol} Logo`}
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = "none";
-                            }}
-                            className="w-full h-full object-contain"
-                            referrerPolicy="no-referrer"
-                          />
-                        ) : (
-                          <span className="text-[10px] uppercase font-bold text-slate-555 text-slate-505 text-slate-500">
-                            {token.symbol?.slice(0, 2)}
-                          </span>
-                        )}
-                      </div>
+                      <TokenLogo logoURI={token.logoURI} symbol={token.symbol} />
 
                       <div className="min-w-0">
                         {(() => {
